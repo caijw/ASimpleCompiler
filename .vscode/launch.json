@@ -7,7 +7,7 @@
       {
         "type": "node",
         "request": "launch",
-        "name": "Mocha Test",
+        "name": "Program",
         "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
         "preLaunchTask": "tsc: build - tsconfig.json",
         "console": "integratedTerminal",
@@ -20,7 +20,7 @@
           "--timeout",
           "999999",
           "--colors",
-          "${workspaceFolder}/test/test.ts"
+          "${workspaceFolder}/src/index.ts"
         ]
       },
       {
