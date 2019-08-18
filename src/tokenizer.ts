@@ -136,8 +136,6 @@ export class Tokenizer {
       // debugger;
       switch (this.state) {
         case DfaState.Initial:
-          this.updateTokenLocStart();
-          this.updateTokenLocEnd();
           this.state = this.initToken(ch);
           break;
         case DfaState.Id:
@@ -167,10 +165,7 @@ export class Tokenizer {
         case DfaState.SemiColon:
         case DfaState.LeftParen:
         case DfaState.RightParen:
-          this.updateTokenLocStart();
-          this.updateTokenLocEnd();
           this.state = this.initToken(ch);
-          continue;
           break;
         case DfaState.IntLiteral:
           if (util.isDigit(ch)) {
@@ -220,8 +215,6 @@ export class Tokenizer {
       }
     }
     if (this.tokenText.length) {
-      this.updateTokenLocStart();
-      this.updateTokenLocEnd();
       this.initToken(ch);
     }
   }
@@ -244,46 +237,68 @@ export class Tokenizer {
       }
       this.token.type = TokenType.Identifier;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (util.isDigit(ch)) {
       newState = DfaState.IntLiteral;
       this.token.type = TokenType.IntLiteral;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (ch === ">") {
       newState = DfaState.GT;
       this.token.type = TokenType.GT;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (ch === "+") {
       newState = DfaState.Plus;
       this.token.type = TokenType.Plus;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (ch === "-") {
       newState = DfaState.Minus;
       this.token.type = TokenType.Minus;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (ch === "*") {
       newState = DfaState.Star;
       this.token.type = TokenType.Star;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (ch === "/") {
       newState = DfaState.Slash;
       this.token.type = TokenType.Slash;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (ch === ";") {
       newState = DfaState.SemiColon;
       this.token.type = TokenType.SemiColon;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (ch === "(") {
       newState = DfaState.LeftParen;
       this.token.type = TokenType.LeftParen;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (ch === ")") {
       newState = DfaState.RightParen;
       this.token.type = TokenType.RightParen;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else if (ch === "=") {
       newState = DfaState.Assignment;
       this.token.type = TokenType.Assignment;
       this.updateTokenText(ch);
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
     } else {
       newState = DfaState.Initial; // skip all unknown patterns
     }

@@ -5,11 +5,11 @@ const tokenizer = new Tokenizer();
 
 const codes: string[] = [
   `int age = 45;`,
-  `;;;`,
-  // "inta age = 45;",
-  // "in age = 45;",
-  // "age >= 45;",
-  // "age > 45;",
+  `;;=>;`,
+  "inta age = 45;",
+  "in age = 45;",
+  "age >= 45;",
+  "age > 45;",
 ];
 
 codes.forEach((code) => {
