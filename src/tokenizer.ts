@@ -1,58 +1,77 @@
 import * as util from "./util";
 import { stat } from "fs";
 
+const DfaStateSet: string[] = [
+  "Initial",
+  "If",
+  "Id_if1",
+  "Id_if2",
+  "Else",
+  "Id_else1",
+  "Id_else2",
+  "Id_else3",
+  "Id_else4",
+  "Int",
+  "Id_int1",
+  "Id_int2",
+  "Id_int3",
+  "Id",
+  "GT",
+  "GE",
+  "Assignment",
+  "Plus",
+  "Minus",
+  "Star",
+  "Slash",
+  "SemiColon",
+  "LeftParen",
+  "RightParen",
+  "IntLiteral",
+]
+
+interface IDfaState {
+  [key: string]: string;
+}
 // 有限状态机的各种状态
-export enum DfaState {
-  Initial,
-  If,
-  Id_if1,
-  Id_if2,
-  Else,
-  Id_else1,
-  Id_else2,
-  Id_else3,
-  Id_else4,
-  Int,
-  Id_int1,
-  Id_int2,
-  Id_int3,
-  Id,
-  GT,
-  GE,
-  Assignment,
-  Plus,
-  Minus,
-  Star,
-  Slash,
-  SemiColon,
-  LeftParen,
-  RightParen,
-  IntLiteral,
+export const DfaState: IDfaState = {};
+
+DfaStateSet.forEach((state) => {
+  DfaState[state] = state;
+});
+
+const TokenTypeSet: string[] = [
+  "Initial",
+  "Plus",    // +
+  "Minus",    // -
+  "Star",    // *
+  "Slash",    // /
+  "GE",    // >=
+  "GT",    // >
+  "EQ",    // ==
+  "LE",    // <=
+  "LT",    // <
+  "SemiColon",    // ;
+  "LeftParen",    // (
+  "RightParen",    // )
+  "Assignment",    // =
+  "If",
+  "Else",
+  "Int",
+  "Identifier",    // 标识符
+  "IntLiteral",    // 整型字面量
+  "StringLiteral",    // 字符串字面量
+];
+// token类型
+
+interface ITokenType {
+  [key: string]: string;
 }
 
-// token类型
-export enum TokenType {
-  Initial,
-  Plus,    // +
-  Minus,    // -
-  Star,    // *
-  Slash,    // /
-  GE,    // >=
-  GT,    // >
-  EQ,    // ==
-  LE,    // <=
-  LT,    // <
-  SemiColon,    // ;
-  LeftParen,    // (
-  RightParen,    // )
-  Assignment,    // =
-  If,
-  Else,
-  Int,
-  Identifier,    // 标识符
-  IntLiteral,    // 整型字面量
-  StringLiteral,    // 字符串字面量
-}
+export const TokenType: ITokenType = {};
+
+TokenTypeSet.forEach((tokenType) => {
+  TokenType[tokenType] = tokenType;
+});
 
 export interface ILoc {
   start: {
@@ -66,19 +85,19 @@ export interface ILoc {
 }
 
 export interface IToken {
-  type: number;
+  type: string;
   text: string;
   loc: ILoc;
 }
 
-export class Token {
-  public type: TokenType;
-  public text: string;
-  public loc: ILoc;
-  public constructor() {
-    this.type = TokenType.Initial;
-    this.text = ``;
-    this.loc = {
+export class Tokenizer {
+  private line: number = 0;
+  private column: number = 0;
+  private index: number = 0;
+  private token: IToken = {
+    type: "",
+    text: "",
+    loc: {
       start: {
         line: 0,
         column: 0,
@@ -87,18 +106,11 @@ export class Token {
         line: 0,
         column: 0,
       },
-    };
-  }
-}
-
-export class Tokenizer {
-  private line: number = 0;
-  private column: number = 0;
-  private index: number = 0;
-  private token: Token = new Token();
+    },
+  };
   private tokenText: string = ``;
-  private state: DfaState = DfaState.Initial;
-  private tokens: Token[] = [];
+  private state: string = DfaState.Initial;
+  private tokens: IToken[] = [];
   public constructor() {
     this.line = 0;
     this.column = 0;
@@ -108,24 +120,30 @@ export class Tokenizer {
     this.line = 1;
     this.column = 0;
     this.index = 0;
-    this.token = new Token();
+    this.token = this.getNewToken();
     this.tokenText = ``;
     this.state = DfaState.Initial;
     this.tokens = [];
+    let ch: string = ``;
     while (this.index < code.length) {
-      const ch = code[this.index];
+      ch = code[this.index];
       if (util.isNewLine(ch)) {
         this.line++;
         this.column = 0;
       }
       this.column++;
+      this.index++;
+      // debugger;
       switch (this.state) {
         case DfaState.Initial:
+          this.updateTokenLocStart();
+          this.updateTokenLocEnd();
           this.state = this.initToken(ch);
           break;
         case DfaState.Id:
           if (util.isAlpha(ch) || util.isDigit(ch)) {
-            this.tokenText = `${this.tokenText}${ch}`;
+            this.updateTokenText(ch);
+            this.updateTokenLocEnd();
           } else {
             this.state = this.initToken(ch);
           }
@@ -134,7 +152,10 @@ export class Tokenizer {
           if (ch === "=") {
             this.token.type = TokenType.GE;
             this.state = DfaState.GE;
-            this.tokenText = `${this.tokenText}${ch}`;
+            this.updateTokenText(ch);
+            this.updateTokenLocEnd();
+          } else {
+            this.state = this.initToken(ch);
           }
           break;
         case DfaState.GE:
@@ -146,11 +167,15 @@ export class Tokenizer {
         case DfaState.SemiColon:
         case DfaState.LeftParen:
         case DfaState.RightParen:
+          this.updateTokenLocStart();
+          this.updateTokenLocEnd();
           this.state = this.initToken(ch);
+          continue;
           break;
-        case DfaState.Initial:
+        case DfaState.IntLiteral:
           if (util.isDigit(ch)) {
-            this.tokenText = `${this.tokenText}${ch}`;
+            this.updateTokenText(ch);
+            this.updateTokenLocEnd();
           } else {
             this.state = this.initToken(ch);
           }
@@ -158,10 +183,12 @@ export class Tokenizer {
         case DfaState.Id_int1:
           if (ch === "n") {
             this.state = DfaState.Id_int2;
-            this.tokenText = `${this.tokenText}${ch}`;
+            this.updateTokenText(ch);
+            this.updateTokenLocEnd();
           } else if (util.isDigit(ch) || util.isAlpha(ch)) {
             this.state = DfaState.Id;
-            this.tokenText = `${this.tokenText}${ch}`;
+            this.updateTokenText(ch);
+            this.updateTokenLocEnd();
           } else {
             this.state = this.initToken(ch);
           }
@@ -169,10 +196,12 @@ export class Tokenizer {
         case DfaState.Id_int2:
           if (ch === "t") {
             this.state = DfaState.Id_int3;
-            this.tokenText = `${this.tokenText}${ch}`;
+            this.updateTokenText(ch);
+            this.updateTokenLocEnd();
           } else if (util.isDigit(ch) || util.isAlpha(ch)) {
             this.state = DfaState.Id;
-            this.tokenText = `${this.tokenText}${ch}`;
+            this.updateTokenText(ch);
+            this.updateTokenLocEnd();
           } else {
             this.state = this.initToken(ch);
           }
@@ -183,22 +212,30 @@ export class Tokenizer {
             this.state = this.initToken(ch);
           } else {
             this.state = DfaState.Id;
-            this.tokenText = `${this.tokenText}${ch}`;
+            this.updateTokenText(ch);
+            this.updateTokenLocEnd();
           }
           break;
         default:
       }
-
+    }
+    if (this.tokenText.length) {
+      this.updateTokenLocStart();
+      this.updateTokenLocEnd();
+      this.initToken(ch);
     }
   }
-  private initToken(ch: string): DfaState {
+  public getTokens(): IToken[] {
+    return this.tokens;
+  }
+  private initToken(ch: string): string {
     if (this.tokenText.length) {
       this.token.text = this.tokenText;
       this.tokens.push(this.token);
-      this.token.text = ``;
-      this.token = new Token();
+      this.tokenText = ``;
+      this.token = this.getNewToken();
     }
-    let newState: DfaState = DfaState.Initial;
+    let newState: string = DfaState.Initial;
     if (util.isAlpha(ch)) { // 第一个字符是字母
       if (ch === "i") {
         newState = DfaState.Id_int1;
@@ -206,51 +243,79 @@ export class Tokenizer {
         newState = DfaState.Id; // 进入Id状态
       }
       this.token.type = TokenType.Identifier;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (util.isDigit(ch)) {
       newState = DfaState.IntLiteral;
       this.token.type = TokenType.IntLiteral;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (ch === ">") {
       newState = DfaState.GT;
       this.token.type = TokenType.GT;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (ch === "+") {
       newState = DfaState.Plus;
       this.token.type = TokenType.Plus;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (ch === "-") {
       newState = DfaState.Minus;
       this.token.type = TokenType.Minus;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (ch === "*") {
       newState = DfaState.Star;
       this.token.type = TokenType.Star;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (ch === "/") {
       newState = DfaState.Slash;
       this.token.type = TokenType.Slash;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (ch === ";") {
       newState = DfaState.SemiColon;
       this.token.type = TokenType.SemiColon;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (ch === "(") {
       newState = DfaState.LeftParen;
       this.token.type = TokenType.LeftParen;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (ch === ")") {
       newState = DfaState.RightParen;
       this.token.type = TokenType.RightParen;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else if (ch === "=") {
       newState = DfaState.Assignment;
       this.token.type = TokenType.Assignment;
-      this.tokenText = `${this.tokenText}${ch}`;
+      this.updateTokenText(ch);
     } else {
       newState = DfaState.Initial; // skip all unknown patterns
     }
 
     return newState;
+  }
+  private updateTokenText(ch: string) {
+    this.tokenText = `${this.tokenText}${ch}`;
+  }
+  private updateTokenLocStart() {
+    this.token.loc.start.line = this.line;
+    this.token.loc.start.column = this.column;
+  }
+  private updateTokenLocEnd() {
+    this.token.loc.end.line = this.line;
+    this.token.loc.end.column = this.column;
+  }
+  private getNewToken(): IToken {
+    const token: IToken = {
+      type: "",
+      text: "",
+      loc: {
+        start: {
+          line: 0,
+          column: 0,
+        },
+        end: {
+          line: 0,
+          column: 0,
+        },
+      },
+    };
+    return token;
   }
 }
