@@ -33,13 +33,13 @@ tokenReader = lexer.tokenize(script);
 lexer.dump(tokenReader);
 
 script = "2+3*5";
-console.log("计算: " + script + "，看上去一切正常。");
+console.log(`计算: "${script}"，看上去一切正常。`);
 calculator.evaluateScript(script);
 
 script = "2+";
-console.log(script + "，应该有语法错误。");
+console.log(`"${script}"，应该有语法错误。`);
 calculator.evaluateScript(script);
 
 script = "2+3+4";
-console.log("计算: " + script + "，结合性出现错误。");
+console.log(`计算: "${script}"，结合性出现错误。`);
 calculator.evaluateScript(script);
