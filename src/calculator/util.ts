@@ -11,9 +11,8 @@ function isBlank(ch: string): boolean {
   return ch === " " || ch === "\t" || ch === "\n";
 }
 
-
 export {
   isAlpha,
   isDigit,
-  isBlank
-}
+  isBlank,
+};

@@ -1,7 +1,6 @@
 import { Token, TokenType, TokenReader } from "./Token";
 import * as util from "./util";
 
-
 enum DfaState {
   Initial,
 
@@ -15,18 +14,115 @@ enum DfaState {
   LeftParen,
   RightParen,
 
-  IntLiteral
+  IntLiteral,
 }
 
 class Lexer {
+  private tokenText: string;
+  private tokens: Token[];
+  private token: Token;
   constructor() {
     this.tokenText = ``;
     this.tokens = [];
     this.token = new Token();
   }
-  private tokenText: string;
-  private tokens: Array<Token>;
-  private token: Token;
+  public tokenize(code: string) {
+    this.tokens = [];
+    this.tokenText = ``;
+    this.token = new Token();
+    let ch: string = "";
+    let index: number = 0;
+    let state: DfaState = DfaState.Initial;
+    while (index < code.length) {
+      ch = code[index];
+      switch (state) {
+        case  DfaState.Initial:
+          state = this.initToken(ch);
+          break;
+        case DfaState.Id:
+          if (util.isAlpha(ch) || util.isDigit(ch)) {
+              this.tokenText = `${this.tokenText}${ch}`;
+          } else {
+              state = this.initToken(ch);
+          }
+          break;
+        case DfaState.GT:
+          if (ch === `=`) {
+            this.token.type = TokenType.GE;
+            state = DfaState.GE;
+            this.tokenText = `${this.tokenText}${ch}`;
+          } else {
+            state = this.initToken(ch);
+          }
+          break;
+        case DfaState.GE:
+        case DfaState.Assignment:
+        case DfaState.Plus:
+        case DfaState.Minus:
+        case DfaState.Star:
+        case DfaState.Slash:
+        case DfaState.SemiColon:
+        case DfaState.LeftParen:
+        case DfaState.RightParen:
+          state = this.initToken(ch);
+          break;
+        case DfaState.IntLiteral:
+          if (util.isDigit(ch)) {
+            this.tokenText = `${this.tokenText}${ch}`;
+          } else {
+            state = this.initToken(ch);
+          }
+          break;
+        case DfaState.Id_int1:
+          if (ch === `n`) {
+            state = DfaState.Id_int2;
+            this.tokenText = `${this.tokenText}${ch}`;
+          } else if (util.isDigit(ch) || util.isAlpha(ch)) {
+            state = DfaState.Id;
+            this.tokenText = `${this.tokenText}${ch}`;
+          } else {
+            state = this.initToken(ch);
+          }
+          break;
+        case DfaState.Id_int2:
+          if (ch === `t`) {
+            state = DfaState.Id_int3;
+            this.tokenText = `${this.tokenText}${ch}`;
+          } else if (util.isDigit(ch) || util.isAlpha(ch)) {
+            state = DfaState.Id;
+            this.tokenText = `${this.tokenText}${ch}`;
+          } else {
+            state = this.initToken(ch);
+          }
+          break;
+        case DfaState.Id_int3:
+          if (util.isBlank(ch)) {
+            this.token.type = TokenType.Int;
+            state = this.initToken(ch);
+          } else {
+            state = DfaState.Id;
+            this.tokenText = `${this.tokenText}${ch}`;
+          }
+          break;
+        default:
+          break;
+      }
+      index++;
+
+    }
+    if (this.tokenText.length) {
+      this.initToken(ch);
+    }
+    return new TokenReader(this.tokens);
+  }
+  public dump(tokenReader: TokenReader) {
+    console.log((`text\t\ttype`));
+    let token: Token|null = tokenReader.read();
+    while (token !== null) {
+      console.log(`${token.getText()}\t\t${token.getType()}`);
+      token = tokenReader.read();
+    }
+  }
   // 初始化token
   private initToken(ch: string): DfaState {
     if (this.tokenText.length) {
@@ -88,105 +184,8 @@ class Lexer {
     }
     return newState;
   }
-  public tokenize(code: string) {
-    this.tokens = [];
-    this.tokenText = ``;
-    this.token = new Token();
-    let ch:string = "";
-    let index: number = 0;
-    let state: DfaState = DfaState.Initial;
-    while(index < code.length) {
-      ch = code[index];
-      switch(state) {
-        case  DfaState.Initial:
-          state = this.initToken(ch);
-          break;
-        case DfaState.Id:
-            if (util.isAlpha(ch) || util.isDigit(ch)) {
-              this.tokenText = `${this.tokenText}${ch}`;
-          } else {
-              state = this.initToken(ch);
-          }
-          break;
-        case DfaState.GT:
-          if (ch === `=`) {
-            this.token.type = TokenType.GE;
-            state = DfaState.GE;
-            this.tokenText = `${this.tokenText}${ch}`;
-          } else {
-            state = this.initToken(ch);
-          }
-          break;
-        case DfaState.GE:
-        case DfaState.Assignment:
-        case DfaState.Plus:
-        case DfaState.Minus:
-        case DfaState.Star:
-        case DfaState.Slash:
-        case DfaState.SemiColon:
-        case DfaState.LeftParen:
-        case DfaState.RightParen:
-          state = this.initToken(ch);
-          break;
-        case DfaState.IntLiteral:
-          if (util.isDigit(ch)) {
-            this.tokenText = `${this.tokenText}${ch}`;
-          } else {
-            state = this.initToken(ch);
-          }
-          break;
-        case DfaState.Id_int1:
-          if (ch === `n`) {
-            state = DfaState.Id_int2;
-            this.tokenText = `${this.tokenText}${ch}`;
-          } else if (util.isDigit(ch) || util.isAlpha(ch)) {
-            state = DfaState.Id; 
-            this.tokenText = `${this.tokenText}${ch}`;
-          } else {
-            state = this.initToken(ch);
-          }
-          break;
-        case DfaState.Id_int2:
-          if (ch === `t`) {
-            state = DfaState.Id_int3;
-            this.tokenText = `${this.tokenText}${ch}`;
-          } else if (util.isDigit(ch) || util.isAlpha(ch)) {
-            state = DfaState.Id; 
-            this.tokenText = `${this.tokenText}${ch}`;
-          } else {
-            state = this.initToken(ch);
-          }
-          break;
-        case DfaState.Id_int3:
-          if (util.isBlank(ch)) {
-            this.token.type = TokenType.Int;
-            state = this.initToken(ch);
-          } else {
-            state = DfaState.Id;
-            this.tokenText = `${this.tokenText}${ch}`;
-          }
-          break;
-        default:
-          break;
-      }
-      index++;
-
-    }
-    if (this.tokenText.length) {
-      this.initToken(ch);
-    }
-    return new TokenReader(this.tokens);
-  }
-  public dump(tokenReader: TokenReader) {
-    console.log((`text\t\ttype`));
-    let token: Token|null;
-    while((token = tokenReader.read()) !== null) {
-      console.log(`${token.getText()}\t\t${token.getType()}`);
-    }
-  }
-
 }
 
 export {
-  Lexer
-}
+  Lexer,
+};
