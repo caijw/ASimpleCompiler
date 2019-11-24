@@ -6,7 +6,9 @@ class Calculator {
   public evaluateScript(script: string) {
     try {
       const tree: ASTNode = this.parse(script);
+      console.log("dumpAST:");
       this.dumpAST(tree, "");
+      console.log("evaluateASTNode:");
       this.evaluateASTNode(tree, "");
     } catch (err) {
       console.error(err.message);
@@ -74,20 +76,20 @@ class Calculator {
   }
   private prog(tokens: TokenReader): ASTNode {
     const node: ASTNode = new ASTNode(ASTNodeType.Programm, "Calculator");
-    const child: ASTNode = this.additive(tokens);
+    const child: ASTNode|null = this.additive(tokens);
     if (child !== null) {
       node.addChild(child);
     }
     return node;
   }
-  private additive(tokens: TokenReader): ASTNode {
-    const child1: ASTNode = this.multiplicative(tokens);
-    let node: ASTNode = child1;
+  private additive(tokens: TokenReader): ASTNode|null {
+    const child1: ASTNode|null = this.multiplicative(tokens);
+    let node: ASTNode|null = child1;
     let token: Token|null = tokens.peek();
     if (child1 !== null && token !== null) {
       if (token.getType() === TokenType.Plus || token.getType() === TokenType.Minus) {
         token = tokens.read();
-        const child2: ASTNode = this.additive(tokens);
+        const child2: ASTNode|null = this.additive(tokens);
         if (child2 !== null && token !== null) {
           node = new ASTNode(ASTNodeType.Additive, token.getText());
           node.addChild(child1);
@@ -100,14 +102,14 @@ class Calculator {
     }
     return node;
   }
-  private multiplicative(tokens: TokenReader): ASTNode {
-    const child1: ASTNode = this.primary(tokens);
-    let node: ASTNode = child1;
+  private multiplicative(tokens: TokenReader): ASTNode|null {
+    const child1: ASTNode|null = this.primary(tokens);
+    let node: ASTNode|null = child1;
     let token: Token|null = tokens.peek();
     if (child1 !== null && token !== null) {
       if (token.getType() === TokenType.Star || token.getType() === TokenType.Slash) {
         token = tokens.read();
-        const child2: ASTNode = this.multiplicative(tokens);
+        const child2: ASTNode|null = this.multiplicative(tokens);
         if (child2 !== null && token !== null) {
           node = new ASTNode(ASTNodeType.Multiplicative, token.getText());
           node.addChild(child1);
@@ -119,8 +121,8 @@ class Calculator {
     }
     return node;
   }
-  private primary(tokens: TokenReader): ASTNode {
-    let node: ASTNode = new ASTNode(ASTNodeType.Primary, "");
+  private primary(tokens: TokenReader): ASTNode|null {
+    let node: ASTNode|null = null;
     let token: Token|null = tokens.peek();
     if (token !== null) {
       if (token.getType() === TokenType.IntLiteral) {
