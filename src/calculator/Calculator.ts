@@ -22,12 +22,18 @@ class Calculator {
       self.dumpAST(child, indent + "\t");
     });
   }
+  /**
+   * 语法分析
+   */
   public parse(code: string): ASTNode {
     const lexer: Lexer = new Lexer();
     const tokens: TokenReader = lexer.tokenize(code);
     const rootNode: ASTNode = this.prog(tokens);
     return rootNode;
   }
+  /**
+   * 解释执行AST
+   */
   public evaluateASTNode(node: ASTNode, indent: string): number {
     let result: number = 0;
     const self = this;

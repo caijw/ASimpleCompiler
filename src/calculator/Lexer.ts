@@ -1,3 +1,6 @@
+/**
+ * 词法分析器
+ */
 import { Token, TokenType, TokenReader } from "./Token";
 import * as util from "./util";
 
