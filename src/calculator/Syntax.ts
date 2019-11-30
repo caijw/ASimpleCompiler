@@ -222,3 +222,7 @@ class Syntax {
     return node;
   }
 }
+
+export {
+  Syntax,
+};

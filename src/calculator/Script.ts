@@ -37,7 +37,7 @@ class Script {
     switch (node.getType()) {
       case ASTNodeType.Programm:
         node.getChildren().forEach((child) => {
-          result = self.evaluateASTNode(child, indent);
+          result = self.evaluateASTNode(child, indent + "\t");
         });
         break;
       case ASTNodeType.Additive:
@@ -95,6 +95,19 @@ class Script {
       default:
         break;
     }
+    if (this.verbose) {
+      console.log(indent + "Result: " + result);
+    } else if (indent === "") {
+      if (node.getType() === ASTNodeType.IntDeclaration || node.getType() === ASTNodeType.AssignmentStmt) {
+        console.log(node.getText() + ": " + result);
+      } else if (node.getType() != ASTNodeType.Programm) {
+        console.log(result);
+      }
+    }
     return result;
   }
 }
+
+export {
+  Script,
+};

@@ -25,10 +25,13 @@
   },
   "homepage": "https://github.com/caijw/ASimpleCompiler#readme",
   "devDependencies": {
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.12.14",
     "mocha": "^6.2.0",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
+  },
+  "bin": {
+    "calculator": "dist/calculator.js"
   }
 }
