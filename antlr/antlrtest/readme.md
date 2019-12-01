@@ -3,10 +3,10 @@
 编译Hello
 
 ```sh
-cd antlr dir
-antlr4 ./antlrtest/Hello.g4
-javac ./antlrtest/Hello.java
- grun antlrtest.Hello tokens -tokens ./antlrtest/hello.play
+cd antlr
+antlr antlrtest/Hello.g4
+javac antlrtest/*.java
+grun antlrtest.Hello tokens -tokens antlrtest/hello.play
 ```
 
 编译PlayScript

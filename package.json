@@ -33,5 +33,9 @@
   },
   "bin": {
     "calculator": "dist/calculator.js"
+  },
+  "dependencies": {
+    "@types/antlr4": "^4.7.0",
+    "antlr4": "^4.7.2"
   }
 }
