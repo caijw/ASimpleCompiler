@@ -14,7 +14,6 @@ PlayScriptVisitor.prototype.constructor = PlayScriptVisitor;
 
 // Visit a parse tree produced by PlayScriptParser#literal.
 PlayScriptVisitor.prototype.visitLiteral = function(ctx) {
-  debugger;
   return this.visitChildren(ctx);
 };
 
@@ -69,17 +68,6 @@ PlayScriptVisitor.prototype.visitAssignmentOperator = function(ctx) {
 
 // Visit a parse tree produced by PlayScriptParser#additiveExpression.
 PlayScriptVisitor.prototype.visitAdditiveExpression = function(ctx) {
-  if (ctx.ADD() !== null && ctx.SUB() !== null) {
-    const left = this.visitAdditiveExpression(ctx.additiveExpression());
-    const right = this.visitMultiplicativeExpression(ctx.multiplicativeExpression());
-    if (ctx.ADD() != null) {
-        return left + right;
-    } else {
-        return left - right;
-    }
-  } else {
-    
-  }
   return this.visitChildren(ctx);
 };
 

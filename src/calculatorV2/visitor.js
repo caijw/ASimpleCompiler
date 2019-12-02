@@ -12,8 +12,7 @@ PlayScriptVisitor.prototype.constructor = PlayScriptVisitor;
 
 // Visit a parse tree produced by PlayScriptParser#additiveExpression.
 PlayScriptVisitor.prototype.visitAdditiveExpression = function(ctx) {
-  debugger;
-  if (ctx.ADD() !== null && ctx.SUB() !== null) {
+  if (ctx.ADD() !== null || ctx.SUB() !== null) {
     const left = this.visitAdditiveExpression(ctx.additiveExpression());
     const right = this.visitMultiplicativeExpression(ctx.multiplicativeExpression());
     if (ctx.ADD() != null) {

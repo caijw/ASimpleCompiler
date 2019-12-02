@@ -4,7 +4,7 @@ const Parser = require("./lib/PlayScriptParser").PlayScriptParser;
 const Listener = require("./lib/PlayScriptListener").PlayScriptListener;
 const Visitor = require("./visitor").PlayScriptVisitor;
 
-var script = "2+6/3"
+var script = "2+6/3;"
 var chars = new antlr4.InputStream(script);
 var lexer = new Lexer(chars);
 var tokens  = new antlr4.CommonTokenStream(lexer);
@@ -19,7 +19,7 @@ console.log("The lisp style ast of : " + script);
 // console.log(tree.toStringTree(parser));
 
 console.log(tree.toStringTree(parser.ruleNames));
-
+debugger;
 var res = tree.accept(new Visitor());
 
 console.log("res:", res);
