@@ -11,3 +11,11 @@ antlr -visitor  -Dlanguage=JavaScript   PlayScript.g4
 ```sh
 java org.antlr.v4.Tool
 ```
+安装antlr
+
+```
+brew install Antlr
+export ANTLR_HOME="/usr/local/Cellar/antlr/4.7.2"
+export CLASSPATH=".:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/jre/lib:$ANTLR_HOME/antlr-4.7.2-complete.jar"
+```
+
