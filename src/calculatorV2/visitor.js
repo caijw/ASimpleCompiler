@@ -12,6 +12,7 @@ PlayScriptVisitor.prototype.constructor = PlayScriptVisitor;
 
 // Visit a parse tree produced by PlayScriptParser#additiveExpression.
 PlayScriptVisitor.prototype.visitAdditiveExpression = function(ctx) {
+  console.log("visitAdditiveExpression");
   if (ctx.ADD() !== null || ctx.SUB() !== null) {
     const left = this.visitAdditiveExpression(ctx.additiveExpression());
     const right = this.visitMultiplicativeExpression(ctx.multiplicativeExpression());
@@ -28,7 +29,7 @@ PlayScriptVisitor.prototype.visitAdditiveExpression = function(ctx) {
 
 // Visit a parse tree produced by PlayScriptParser#multiplicativeExpression.
 PlayScriptVisitor.prototype.visitMultiplicativeExpression = function(ctx) {
-  debugger;
+  console.log("visitMultiplicativeExpression");
   if (ctx.MUL() !== null || ctx.DIV() !== null || ctx.MOD() !== null) {
     const left = this.visitMultiplicativeExpression(ctx.multiplicativeExpression());
     const right = this.visitPrimaryExpression(ctx.primaryExpression());
@@ -46,7 +47,7 @@ PlayScriptVisitor.prototype.visitMultiplicativeExpression = function(ctx) {
 
 
 PlayScriptVisitor.prototype.visitPrimaryExpression = function(ctx) {
-  debugger;
+  console.log("visitPrimaryExpression");
   if (ctx.literal() !== null) {
       return this.visitLiteral(ctx.literal());
   }
@@ -55,7 +56,7 @@ PlayScriptVisitor.prototype.visitPrimaryExpression = function(ctx) {
 
 // Visit a parse tree produced by PlayScriptParser#literal.
 PlayScriptVisitor.prototype.visitLiteral = function(ctx) {
-  debugger;
+  console.log("visitLiteral");
   if (ctx.IntegerLiteral() !== null){
       return parseInt(ctx.IntegerLiteral().getText(), 10);
   }

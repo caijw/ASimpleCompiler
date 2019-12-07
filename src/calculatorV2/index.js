@@ -4,7 +4,7 @@ const Parser = require("./lib/PlayScriptParser").PlayScriptParser;
 const Listener = require("./lib/PlayScriptListener").PlayScriptListener;
 const Visitor = require("./visitor").PlayScriptVisitor;
 
-var script = "2+6/3;"
+var script = "1+6/2;"
 var chars = new antlr4.InputStream(script);
 var lexer = new Lexer(chars);
 var tokens  = new antlr4.CommonTokenStream(lexer);

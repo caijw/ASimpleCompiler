@@ -1,4 +1,4 @@
-// Generated from /Users/jingweicai/Documents/code/ASimpleCompiler/src/calculatorV2/lib/PlayScript.g4 by ANTLR 4.7.1
+// Generated from PlayScript.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class PlayScriptParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.7.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -26,24 +26,33 @@ public class PlayScriptParser extends Parser {
 		RULE_assignmentOperator = 8, RULE_additiveExpression = 9, RULE_multiplicativeExpression = 10, 
 		RULE_primaryExpression = 11, RULE_argumentExpressionList = 12, RULE_compoundStatement = 13, 
 		RULE_blockItemList = 14, RULE_blockItem = 15;
-	public static final String[] ruleNames = {
-		"literal", "primitiveType", "statement", "expressionStatement", "declaration", 
-		"initializer", "expression", "assignmentExpression", "assignmentOperator", 
-		"additiveExpression", "multiplicativeExpression", "primaryExpression", 
-		"argumentExpressionList", "compoundStatement", "blockItemList", "blockItem"
-	};
+	private static String[] makeRuleNames() {
+		return new String[] {
+			"literal", "primitiveType", "statement", "expressionStatement", "declaration", 
+			"initializer", "expression", "assignmentExpression", "assignmentOperator", 
+			"additiveExpression", "multiplicativeExpression", "primaryExpression", 
+			"argumentExpressionList", "compoundStatement", "blockItemList", "blockItem"
+		};
+	}
+	public static final String[] ruleNames = makeRuleNames();
 
-	private static final String[] _LITERAL_NAMES = {
-		null, "'Number'", "'='", "'*='", "'/='", "'%='", "'+='", "'-='", "'<<='", 
-		"'>>='", "'>>>='", "'&='", "'^='", "'|='", "'{'", "'}'", "'int'", null, 
-		"'('", "')'", "';'", "','", "'+'", "'-'", "'*'", "'/'", "'%'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, "INT", "IntegerLiteral", "LPAREN", "RPAREN", "SEMI", 
-		"COMMA", "ADD", "SUB", "MUL", "DIV", "MOD", "Identifier", "WS", "COMMENT", 
-		"LINE_COMMENT"
-	};
+	private static String[] makeLiteralNames() {
+		return new String[] {
+			null, "'Number'", "'='", "'*='", "'/='", "'%='", "'+='", "'-='", "'<<='", 
+			"'>>='", "'>>>='", "'&='", "'^='", "'|='", "'{'", "'}'", "'int'", null, 
+			"'('", "')'", "';'", "','", "'+'", "'-'", "'*'", "'/'", "'%'"
+		};
+	}
+	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+	private static String[] makeSymbolicNames() {
+		return new String[] {
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, "INT", "IntegerLiteral", "LPAREN", "RPAREN", 
+			"SEMI", "COMMA", "ADD", "SUB", "MUL", "DIV", "MOD", "Identifier", "WS", 
+			"COMMENT", "LINE_COMMENT"
+		};
+	}
+	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
 	/**
@@ -93,12 +102,26 @@ public class PlayScriptParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
+
 	public static class LiteralContext extends ParserRuleContext {
 		public TerminalNode IntegerLiteral() { return getToken(PlayScriptParser.IntegerLiteral, 0); }
 		public LiteralContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_literal; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterLiteral(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitLiteral(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitLiteral(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final LiteralContext literal() throws RecognitionException {
@@ -127,6 +150,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_primitiveType; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterPrimitiveType(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitPrimitiveType(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitPrimitiveType(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PrimitiveTypeContext primitiveType() throws RecognitionException {
@@ -161,6 +197,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitStatement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final StatementContext statement() throws RecognitionException {
@@ -203,6 +252,7 @@ public class PlayScriptParser extends Parser {
 	}
 
 	public static class ExpressionStatementContext extends ParserRuleContext {
+		public TerminalNode SEMI() { return getToken(PlayScriptParser.SEMI, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -210,6 +260,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expressionStatement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterExpressionStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitExpressionStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitExpressionStatement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionStatementContext expressionStatement() throws RecognitionException {
@@ -256,6 +319,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_declaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitDeclaration(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final DeclarationContext declaration() throws RecognitionException {
@@ -309,6 +385,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_initializer; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterInitializer(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitInitializer(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitInitializer(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final InitializerContext initializer() throws RecognitionException {
@@ -341,10 +430,24 @@ public class PlayScriptParser extends Parser {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode COMMA() { return getToken(PlayScriptParser.COMMA, 0); }
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -416,6 +519,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignmentExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterAssignmentExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitAssignmentExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitAssignmentExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AssignmentExpressionContext assignmentExpression() throws RecognitionException {
@@ -461,6 +577,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignmentOperator; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterAssignmentOperator(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitAssignmentOperator(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitAssignmentOperator(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AssignmentOperatorContext assignmentOperator() throws RecognitionException {
@@ -500,10 +629,25 @@ public class PlayScriptParser extends Parser {
 		public AdditiveExpressionContext additiveExpression() {
 			return getRuleContext(AdditiveExpressionContext.class,0);
 		}
+		public TerminalNode ADD() { return getToken(PlayScriptParser.ADD, 0); }
+		public TerminalNode SUB() { return getToken(PlayScriptParser.SUB, 0); }
 		public AdditiveExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_additiveExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterAdditiveExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitAdditiveExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitAdditiveExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final AdditiveExpressionContext additiveExpression() throws RecognitionException {
@@ -588,10 +732,26 @@ public class PlayScriptParser extends Parser {
 		public MultiplicativeExpressionContext multiplicativeExpression() {
 			return getRuleContext(MultiplicativeExpressionContext.class,0);
 		}
+		public TerminalNode MUL() { return getToken(PlayScriptParser.MUL, 0); }
+		public TerminalNode DIV() { return getToken(PlayScriptParser.DIV, 0); }
+		public TerminalNode MOD() { return getToken(PlayScriptParser.MOD, 0); }
 		public MultiplicativeExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_multiplicativeExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterMultiplicativeExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitMultiplicativeExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitMultiplicativeExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final MultiplicativeExpressionContext multiplicativeExpression() throws RecognitionException {
@@ -686,6 +846,8 @@ public class PlayScriptParser extends Parser {
 		public LiteralContext literal() {
 			return getRuleContext(LiteralContext.class,0);
 		}
+		public TerminalNode LPAREN() { return getToken(PlayScriptParser.LPAREN, 0); }
+		public TerminalNode RPAREN() { return getToken(PlayScriptParser.RPAREN, 0); }
 		public ArgumentExpressionListContext argumentExpressionList() {
 			return getRuleContext(ArgumentExpressionListContext.class,0);
 		}
@@ -696,6 +858,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_primaryExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterPrimaryExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitPrimaryExpression(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitPrimaryExpression(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final PrimaryExpressionContext primaryExpression() throws RecognitionException {
@@ -772,10 +947,24 @@ public class PlayScriptParser extends Parser {
 		public ArgumentExpressionListContext argumentExpressionList() {
 			return getRuleContext(ArgumentExpressionListContext.class,0);
 		}
+		public TerminalNode COMMA() { return getToken(PlayScriptParser.COMMA, 0); }
 		public ArgumentExpressionListContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_argumentExpressionList; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterArgumentExpressionList(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitArgumentExpressionList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitArgumentExpressionList(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final ArgumentExpressionListContext argumentExpressionList() throws RecognitionException {
@@ -843,6 +1032,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_compoundStatement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterCompoundStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitCompoundStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitCompoundStatement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final CompoundStatementContext compoundStatement() throws RecognitionException {
@@ -890,6 +1092,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_blockItemList; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterBlockItemList(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitBlockItemList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitBlockItemList(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final BlockItemListContext blockItemList() throws RecognitionException {
@@ -958,6 +1173,19 @@ public class PlayScriptParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_blockItem; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).enterBlockItem(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof PlayScriptListener ) ((PlayScriptListener)listener).exitBlockItem(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof PlayScriptVisitor ) return ((PlayScriptVisitor<? extends T>)visitor).visitBlockItem(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final BlockItemContext blockItem() throws RecognitionException {
