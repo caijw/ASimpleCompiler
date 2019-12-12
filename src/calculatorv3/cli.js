@@ -4,6 +4,19 @@ const Parser = require("./CalcParser").CalcParser;
 const EvalVisitor = require("./EvalVisitor").CalcVisitor;
 const readline = require("readline");
 
+function parse(script) {
+  const chars = new antlr4.InputStream(script);
+  const lexer = new Lexer(chars);
+  const tokens  = new antlr4.CommonTokenStream(lexer);
+  var parser = new Parser(tokens);
+  parser.buildParseTrees = true;
+  const tree = parser.prog();
+  console.log("The lisp style ast of : \n" + script);
+  const stringTree = tree.toStringTree(parser.ruleNames);
+  console.log(stringTree);
+  const res = eval.visit(tree);
+}
+
 let verbose = false;
 
 if (process.argv[2] === "-v") {
@@ -19,19 +32,6 @@ const rl = readline.createInterface({
 rl.prompt();
 
 const eval = new EvalVisitor(verbose);
-
-function parse(script) {
-  const chars = new antlr4.InputStream(script);
-  const lexer = new Lexer(chars);
-  const tokens  = new antlr4.CommonTokenStream(lexer);
-  var parser = new Parser(tokens);
-  parser.buildParseTrees = true;
-  const tree = parser.prog();
-  console.log("The lisp style ast of : \n" + script);
-  const stringTree = tree.toStringTree(parser.ruleNames);
-  console.log(stringTree);
-  const res = eval.visit(tree);
-}
 
 let scriptText = "";
 
