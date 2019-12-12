@@ -18,12 +18,11 @@ const rl = readline.createInterface({
 
 rl.prompt();
 
-
 const script = new Script(verbose);
 const syntax = new Syntax();
 let scriptText = "";
 
-rl.on('line', (line) => {
+rl.on("line", (line) => {
   line = line.trim();
   if (line === "exit();") {
     console.log("good bye!");
@@ -40,8 +39,8 @@ rl.on('line', (line) => {
     scriptText = "";
   }
   rl.prompt();
-}).on('close', () => {
-  console.log('Have a great day!');
+}).on("close", () => {
+  console.log("Have a great day!");
   process.exit(0);
 });
 

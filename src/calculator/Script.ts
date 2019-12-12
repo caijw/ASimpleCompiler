@@ -100,7 +100,7 @@ class Script {
     } else if (indent === "") {
       if (node.getType() === ASTNodeType.IntDeclaration || node.getType() === ASTNodeType.AssignmentStmt) {
         console.log(node.getText() + ": " + result);
-      } else if (node.getType() != ASTNodeType.Programm) {
+      } else if (node.getType() !== ASTNodeType.Programm) {
         console.log(result);
       }
     }
