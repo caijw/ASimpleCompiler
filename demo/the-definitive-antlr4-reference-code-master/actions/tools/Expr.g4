@@ -1,4 +1,5 @@
 /** Grammar from tour chapter augmented with actions */
+// https://pragprog.com/titles/tpantlr2/errata?utf8=%E2%9C%93&what_to_show=1881
 grammar Expr;
 
 @header {
@@ -26,7 +27,7 @@ stat:   e NEWLINE           {System.out.println($e.v);}
     |   NEWLINE                   
     ;
 
-e returns [int v] // 返回值
+e returns [int v]
     : a=e op=('*'|'/') b=e  {$v = eval($a.v, $op.type, $b.v);}
     | a=e op=('+'|'-') b=e  {$v = eval($a.v, $op.type, $b.v);}  
     | INT                   {$v = $INT.int;}    
@@ -35,7 +36,7 @@ e returns [int v] // 返回值
       String id = $ID.text;
       $v = memory.containsKey(id) ? memory.get(id) : 0;
       }
-    | '(' e ')'             {$v = $e.v;}       
+    | '(' a=e ')'             {$v = $a.v;}       
     ; 
 
 MUL : '*' ;
