@@ -9,7 +9,7 @@
     "compile": "tsc --declaration",
     "lint": "tslint --project tsconfig.json",
     "test": "npm run lint && npm run _mocha",
-    "_mocha": "mocha -t 999999 -r ts-node/register test/test.ts"
+    "_mocha": "mocha -t 999999 -r ts-node/register test/test.ts",
   },
   "repository": {
     "type": "git",

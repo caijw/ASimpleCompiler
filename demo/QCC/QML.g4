@@ -122,7 +122,7 @@ sourceElements
 
 sourceElement
  : statement
- | functionDeclaration
+//  | functionDeclaration
  ;
 
 // statement
@@ -147,137 +147,137 @@ statement
  : singleExpression
  ;
 
-block
- : '{' statementList? '}'
- ;
+// block
+//  : '{' statementList? '}'
+//  ;
 
-statementList
- : statement+
- ;
-
-
-variableStatement
- : Var variableDeclarationList eos
- ;
+// statementList
+//  : statement+
+//  ;
 
 
-variableDeclarationList
- : variableDeclaration ( ',' variableDeclaration )*
- ;
+// variableStatement
+//  : Var variableDeclarationList eos
+//  ;
 
 
-variableDeclaration
- : Identifier initialiser?
- ;
+// variableDeclarationList
+//  : variableDeclaration ( ',' variableDeclaration )*
+//  ;
 
 
-initialiser
- : '=' singleExpression
- ;
+// variableDeclaration
+//  : Identifier initialiser?
+//  ;
 
 
-emptyStatement
- : SemiColon
- ;
+// initialiser
+//  : '=' singleExpression
+//  ;
 
 
-expressionStatement
- : expressionSequence
- ;
+// emptyStatement
+//  : SemiColon
+//  ;
 
 
-ifStatement
- : If '(' expressionSequence ')' statement ( Else statement )?
- ;
+// expressionStatement
+//  : expressionSequence
+//  ;
 
 
-iterationStatement
- : Do statement While '(' expressionSequence ')' eos                                                 # DoStatement
- | While '(' expressionSequence ')' statement                                                        # WhileStatement
- | For '(' expressionSequence? ';' expressionSequence? ';' expressionSequence? ')' statement         # ForStatement
- | For '(' Var variableDeclarationList ';' expressionSequence? ';' expressionSequence? ')' statement # ForVarStatement
- | For '(' singleExpression In expressionSequence ')' statement                                      # ForInStatement
- | For '(' Var variableDeclaration In expressionSequence ')' statement                               # ForVarInStatement
- ;
+// ifStatement
+//  : If '(' expressionSequence ')' statement ( Else statement )?
+//  ;
 
 
-continueStatement
- : Continue ({!this.here(ECMAScriptParser.LineTerminator)}? Identifier)? eos
- ;
+// iterationStatement
+//  : Do statement While '(' expressionSequence ')' eos                                                 # DoStatement
+//  | While '(' expressionSequence ')' statement                                                        # WhileStatement
+//  | For '(' expressionSequence? ';' expressionSequence? ';' expressionSequence? ')' statement         # ForStatement
+//  | For '(' Var variableDeclarationList ';' expressionSequence? ';' expressionSequence? ')' statement # ForVarStatement
+//  | For '(' singleExpression In expressionSequence ')' statement                                      # ForInStatement
+//  | For '(' Var variableDeclaration In expressionSequence ')' statement                               # ForVarInStatement
+//  ;
 
 
-breakStatement
- : Break ({!this.here(ECMAScriptParser.LineTerminator)}? Identifier)? eos
- ;
+// continueStatement
+//  : Continue ({!this.here(ECMAScriptParser.LineTerminator)}? Identifier)? eos
+//  ;
 
 
-returnStatement
- : Return ({!this.here(ECMAScriptParser.LineTerminator)}? expressionSequence)? eos
- ;
+// breakStatement
+//  : Break ({!this.here(ECMAScriptParser.LineTerminator)}? Identifier)? eos
+//  ;
 
 
-withStatement
- : With '(' expressionSequence ')' statement
- ;
+// returnStatement
+//  : Return ({!this.here(ECMAScriptParser.LineTerminator)}? expressionSequence)? eos
+//  ;
 
 
-switchStatement
- : Switch '(' expressionSequence ')' caseBlock
- ;
+// withStatement
+//  : With '(' expressionSequence ')' statement
+//  ;
 
 
-caseBlock
- : '{' caseClauses? ( defaultClause caseClauses? )? '}'
- ;
+// switchStatement
+//  : Switch '(' expressionSequence ')' caseBlock
+//  ;
 
 
-caseClauses
- : caseClause+
- ;
-
-caseClause
- : Case expressionSequence ':' statementList?
- ;
+// caseBlock
+//  : '{' caseClauses? ( defaultClause caseClauses? )? '}'
+//  ;
 
 
-defaultClause
- : Default ':' statementList?
- ;
+// caseClauses
+//  : caseClause+
+//  ;
+
+// caseClause
+//  : Case expressionSequence ':' statementList?
+//  ;
 
 
-labelledStatement
- : Identifier ':' statement
- ;
-
-throwStatement
- : Throw {!this.here(ECMAScriptParser.LineTerminator)}? expressionSequence eos
- ;
-
-tryStatement
- : Try block catchProduction
- | Try block finallyProduction
- | Try block catchProduction finallyProduction
- ;
+// defaultClause
+//  : Default ':' statementList?
+//  ;
 
 
-catchProduction
- : Catch '(' Identifier ')' block
- ;
+// labelledStatement
+//  : Identifier ':' statement
+//  ;
+
+// throwStatement
+//  : Throw {!this.here(ECMAScriptParser.LineTerminator)}? expressionSequence eos
+//  ;
+
+// tryStatement
+//  : Try block catchProduction
+//  | Try block finallyProduction
+//  | Try block catchProduction finallyProduction
+//  ;
 
 
-finallyProduction
- : Finally block
- ;
+// catchProduction
+//  : Catch '(' Identifier ')' block
+//  ;
 
 
-debuggerStatement
- : Debugger eos
- ;
+// finallyProduction
+//  : Finally block
+//  ;
 
 
-functionDeclaration
- : Function Identifier '(' formalParameterList? ')' '{' functionBody '}'
- ;
+// debuggerStatement
+//  : Debugger eos
+//  ;
+
+
+// functionDeclaration
+//  : Function Identifier '(' formalParameterList? ')' '{' functionBody '}'
+//  ;
 
 
 formalParameterList
@@ -287,7 +287,8 @@ formalParameterList
 functionBody
  : sourceElements?
  ;
-    
+
+// [0, 1, 2, , , , ]
 arrayLiteral
  : '[' elementList? ','? elision? ']'
  ;
@@ -297,11 +298,11 @@ elementList
  : elision? singleExpression ( ',' elision? singleExpression )*
  ;
 
-
 elision
  : ','+
  ;
 
+// { key: value, }
 objectLiteral
  : '{' '}'
  | '{' propertyNameAndValueList ','? '}'
@@ -311,11 +312,11 @@ propertyNameAndValueList
  : propertyAssignment ( ',' propertyAssignment )*
  ;
     
-
+// TODO 对象是否支持 set/get
 propertyAssignment
  : propertyName ':' singleExpression                            # PropertyExpressionAssignment
- | getter '(' ')' '{' functionBody '}'                          # PropertyGetter
- | setter '(' propertySetParameterList ')' '{' functionBody '}' # PropertySetter
+//  | getter '(' ')' '{' functionBody '}'                          # PropertyGetter
+//  | setter '(' propertySetParameterList ')' '{' functionBody '}' # PropertySetter
  ;           
     
 
@@ -335,27 +336,28 @@ arguments
  : '(' argumentList? ')'
  ;
     
-
+// the same with expressionSequence
 argumentList
  : singleExpression ( ',' singleExpression )*
  ;
     
-
+// the same with expressionSequence
 expressionSequence
  : singleExpression ( ',' singleExpression )*
  ;
 
 singleExpression
- : Function Identifier? '(' formalParameterList? ')' '{' functionBody '}' # FunctionExpression
- | singleExpression '[' expressionSequence ']'                            # MemberIndexExpression
+ : 
+//  Function Identifier? '(' formalParameterList? ')' '{' functionBody '}' # FunctionExpression
+ singleExpression '[' expressionSequence ']'                            # MemberIndexExpression
  | singleExpression '.' identifierName                                    # MemberDotExpression
  | singleExpression arguments                                             # ArgumentsExpression
- | New singleExpression arguments?                                        # NewExpression
+//  | New singleExpression arguments?                                        # NewExpression
  | singleExpression {!this.here(ECMAScriptParser.LineTerminator)}? '++'                         # PostIncrementExpression
  | singleExpression {!this.here(ECMAScriptParser.LineTerminator)}? '--'                         # PostDecreaseExpression
- | Delete singleExpression                                                # DeleteExpression
- | Void singleExpression                                                  # VoidExpression
- | Typeof singleExpression                                                # TypeofExpression
+//  | Delete singleExpression                                                # DeleteExpression
+//  | Void singleExpression                                                  # VoidExpression
+//  | Typeof singleExpression                                                # TypeofExpression
  | '++' singleExpression                                                  # PreIncrementExpression
  | '--' singleExpression                                                  # PreDecreaseExpression
  | '+' singleExpression                                                   # UnaryPlusExpression
@@ -366,8 +368,8 @@ singleExpression
  | singleExpression ( '+' | '-' ) singleExpression                        # AdditiveExpression
  | singleExpression ( '<<' | '>>' | '>>>' ) singleExpression              # BitShiftExpression
  | singleExpression ( '<' | '>' | '<=' | '>=' ) singleExpression          # RelationalExpression
- | singleExpression Instanceof singleExpression                           # InstanceofExpression
- | singleExpression In singleExpression                                   # InExpression
+//  | singleExpression Instanceof singleExpression                           # InstanceofExpression
+//  | singleExpression In singleExpression                                   # InExpression
  | singleExpression ( '==' | '!=' | '===' | '!==' ) singleExpression      # EqualityExpression
  | singleExpression '&' singleExpression                                  # BitAndExpression
  | singleExpression '^' singleExpression                                  # BitXOrExpression
@@ -400,6 +402,7 @@ assignmentOperator
  | '|='
  ;
 
+// 常量
 literal
  : ( NullLiteral 
    | BooleanLiteral
@@ -409,6 +412,7 @@ literal
  | numericLiteral
  ;
 
+// 数字常量
 numericLiteral
  : DecimalLiteral
  | HexIntegerLiteral
@@ -476,26 +480,26 @@ futureReservedWord
  | Yield
  ;
 
-getter
- : {this._input.LT(1).text.startsWith("get")}? Identifier propertyName
- ;
+// getter
+//  : {this._input.LT(1).text.startsWith("get")}? Identifier propertyName
+//  ;
 
-setter
- : {this._input.LT(1).text.startsWith("set")}? Identifier propertyName
- ;
+// setter
+//  : {this._input.LT(1).text.startsWith("set")}? Identifier propertyName
+//  ;
 
-eos
- : SemiColon
- | EOF
- | {this.lineTerminatorAhead()}?
- | {this._input.LT(1).type == ECMAScriptParser.CloseBrace}?
- ;
+// eos
+//  : SemiColon
+//  | EOF
+//  | {this.lineTerminatorAhead()}?
+//  | {this._input.LT(1).type == ECMAScriptParser.CloseBrace}?
+//  ;
 
-eof
- : EOF
- ;
+// eof
+//  : EOF
+//  ;
 
-
+// TODO 是否支持正则表达式
 RegularExpressionLiteral
  : {this.isRegexPossible()}? '/' RegularExpressionBody '/' RegularExpressionFlags
  ;
